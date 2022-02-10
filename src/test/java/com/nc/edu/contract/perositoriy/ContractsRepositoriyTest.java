@@ -2,6 +2,8 @@ package com.nc.edu.contract.perositoriy;
 
 import static org.junit.Assert.*;
 
+import java.util.function.Predicate;
+
 import org.junit.Test;
 
 import com.nc.edu.java.contract.forms.Contract;
@@ -14,8 +16,10 @@ import com.nc.edu.java.contract.repositoriy.ContractsRepositoriy;
 public class ContractsRepositoriyTest {
 
 	ContractsRepositoriy contracts = new ContractsRepositoriy();
+	ContractsRepositoriy contracts2 = new ContractsRepositoriy();
 	private Contract[] addContracts = new Contract [5];
 	private Contract[] checkDeleteContract = new Contract [4];
+	private Contract[] checkSearch = new Contract [2];
 	
 	@Test
 	public void testAddContract() {
@@ -25,7 +29,7 @@ public class ContractsRepositoriyTest {
 		{
 			for(int j = 0;j<addContracts[i].getAllFields().length;j++)
 			{
-				assertEquals(addContracts[i].getAllFields()[j],contracts.getContracts()[i].getAllFields()[j]);
+				assertEquals(addContracts[i].getAllFields()[j],contracts.getCloneContractsArray()[i].getAllFields()[j]);
 			}
 
 		}
@@ -63,7 +67,24 @@ public class ContractsRepositoriyTest {
 		{
 			for(int j = 0;j<checkDeleteContract[i].getAllFields().length;j++)
 			{
-				assertEquals(checkDeleteContract[i].getAllFields()[j],contracts.getContracts()[i].getAllFields()[j]);
+				assertEquals(checkDeleteContract[i].getAllFields()[j],contracts.getCloneContractsArray()[i].getAllFields()[j]);
+			}
+
+		}
+	}
+	
+	@Test
+	public void testSearch() {
+		fillListContracts();
+		//Predicate<Contract> predicateOne = contract -> contract.getId() < 4;
+		//Predicate<Contract> predicateOne = contract -> contract.getClass().equals(InternetContract.class);
+		Predicate<Contract> predicateOne = contract -> contract instanceof InternetContract && ((InternetContract)contract).getSpeed() > 100;
+		contracts2 = contracts.search(predicateOne);
+		for(int i =0;i<contracts2.getCloneContractsArray().length;i++)
+		{
+			for(int j = 0;j<contracts2.getCloneContractsArray()[i].getAllFields().length;j++)
+			{
+				assertEquals(contracts2.getCloneContractsArray()[i].getAllFields()[j],checkSearch[i].getAllFields()[j]);
 			}
 
 		}
@@ -88,6 +109,9 @@ public class ContractsRepositoriyTest {
 		checkDeleteContract[1] = mobileOne;
 		checkDeleteContract[2] = internetTwo;
 		checkDeleteContract[3] = tvTwo;
+		//checkSearch[0] = internetOne;
+		checkSearch[0] = internetTwo;
+		//checkSearch[2] = internetTwo; 
 	}
 
 }

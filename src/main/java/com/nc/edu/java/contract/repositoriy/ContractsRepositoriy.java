@@ -1,8 +1,11 @@
 
 package com.nc.edu.java.contract.repositoriy;
 
+import com.edu.java.contract.sorts.ISorter;
 import com.nc.edu.java.contract.forms.Contract;
 import java.lang.RuntimeException;
+import java.util.Comparator;
+import java.util.function.Predicate;
 
 /*
  * This class is repository for keep contracts.
@@ -16,20 +19,8 @@ public class ContractsRepositoriy {
 	//This field is array of contracts of different types
 	private Contract[] contracts = new Contract[number];
 	
+	private ISorter sorter;
 	
-	public int getNumber() {
-		return number;
-	}
-
-	public void setNumber(int number) {
-		this.number = number;
-	}
-
-	public Contract[] getContracts() {
-		return contracts;
-	}
-
-
 	/*
 	 * 	This method adds an array of contracts in repository. 
 	 * This method takes a new array of contracts and adds this array
@@ -38,10 +29,7 @@ public class ContractsRepositoriy {
 	public void addContract(Contract[] addListContracts)
 	{
 		Contract[] newListContracts = new Contract[number];
-		for(int i =0; i< contracts.length;i++)
-		{
-			newListContracts[i] = contracts[i];
-		}
+		newListContracts = getCloneContractsArray();
 		int leghtAddList = addListContracts.length;
 		number += leghtAddList;	
 		contracts = new Contract [number];
@@ -58,6 +46,16 @@ public class ContractsRepositoriy {
 			
 		}
 
+	}
+	
+	public Contract[] getCloneContractsArray()
+	{
+		Contract[] cloneContracts = new Contract[number];
+		for(int i =0; i< contracts.length;i++)
+		{
+			cloneContracts[i] = contracts[i];
+		}
+		return cloneContracts;
 	}
 	
 	/*
@@ -137,6 +135,30 @@ public class ContractsRepositoriy {
 		{
 			throw new RuntimeException("Not founded");
 		}
+	}
+	
+	private void sort(Comparator<Contract> comparator)
+	{
+		sorter.sort(contracts, comparator);
+	}
+	
+	public ContractsRepositoriy search(Predicate<Contract> predicate)
+	{
+		int indexElements = 0;
+		Contract[] listContracts = new Contract[1];
+		ContractsRepositoriy contractsSearch = new ContractsRepositoriy();
+
+		for(int i=0;i<contracts.length;i++)
+		{
+			if(predicate.test(contracts[i]))
+			{
+				listContracts[indexElements] = contracts[i];
+				contractsSearch.addContract(listContracts);
+
+			}
+		}
+
+		return contractsSearch;
 	}
 
 }
