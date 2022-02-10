@@ -25,7 +25,7 @@ public class ContractsRepositoriyTest {
 		{
 			for(int j = 0;j<addContracts[i].getAllFields().length;j++)
 			{
-				assertEquals(addContracts[i].getAllFields()[j],contracts.getContracts()[i].getAllFields()[j]);
+				assertEquals(addContracts[i].getAllFields()[j],contracts.getCloneContractsArray()[i].getAllFields()[j]);
 			}
 
 		}
@@ -63,7 +63,7 @@ public class ContractsRepositoriyTest {
 		{
 			for(int j = 0;j<checkDeleteContract[i].getAllFields().length;j++)
 			{
-				assertEquals(checkDeleteContract[i].getAllFields()[j],contracts.getContracts()[i].getAllFields()[j]);
+				assertEquals(checkDeleteContract[i].getAllFields()[j],contracts.getCloneContractsArray()[i].getAllFields()[j]);
 			}
 
 		}

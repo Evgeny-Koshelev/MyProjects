@@ -17,19 +17,6 @@ public class ContractsRepositoriy {
 	private Contract[] contracts = new Contract[number];
 	
 	
-	public int getNumber() {
-		return number;
-	}
-
-	public void setNumber(int number) {
-		this.number = number;
-	}
-
-	public Contract[] getContracts() {
-		return contracts;
-	}
-
-
 	/*
 	 * 	This method adds an array of contracts in repository. 
 	 * This method takes a new array of contracts and adds this array
@@ -38,10 +25,7 @@ public class ContractsRepositoriy {
 	public void addContract(Contract[] addListContracts)
 	{
 		Contract[] newListContracts = new Contract[number];
-		for(int i =0; i< contracts.length;i++)
-		{
-			newListContracts[i] = contracts[i];
-		}
+		newListContracts = getCloneContractsArray();
 		int leghtAddList = addListContracts.length;
 		number += leghtAddList;	
 		contracts = new Contract [number];
@@ -58,6 +42,20 @@ public class ContractsRepositoriy {
 			
 		}
 
+	}
+	
+	/*
+	 * 	This method clones an array of contracts of this repository 
+	 * and returns this clone
+	 */
+	public Contract[] getCloneContractsArray()
+	{
+		Contract[] cloneContracts = new Contract[number];
+		for(int i =0; i< contracts.length;i++)
+		{
+			cloneContracts[i] = contracts[i];
+		}
+		return cloneContracts;
 	}
 	
 	/*
