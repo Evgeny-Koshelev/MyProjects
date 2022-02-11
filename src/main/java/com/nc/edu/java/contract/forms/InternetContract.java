@@ -13,7 +13,7 @@ public class InternetContract extends Contract{
     //This field is Internet speed in Mbps
 	int speed;
 	
-	public int getSpeed() {
+	public Integer getSpeed() {
 		return speed;
 	}
 

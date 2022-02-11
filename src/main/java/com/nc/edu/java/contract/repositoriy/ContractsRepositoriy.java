@@ -1,10 +1,14 @@
 
 package com.nc.edu.java.contract.repositoriy;
 
-import com.edu.java.contract.sorts.ISorter;
 import com.nc.edu.java.contract.forms.Contract;
+import com.nc.edu.java.contract.sorts.ISorter;
+import com.nc.edu.java.contract.sorts.MergeSorter;
+import com.nc.edu.java.contract.sorts.QuickSorter;
+
 import java.lang.RuntimeException;
 import java.util.Comparator;
+import java.util.Set;
 import java.util.function.Predicate;
 
 /*
@@ -19,7 +23,8 @@ public class ContractsRepositoriy {
 	//This field is array of contracts of different types
 	private Contract[] contracts = new Contract[number];
 	
-	private ISorter sorter;
+//	private ISorter sorter = new MergeSorter();
+	private ISorter sorter = new QuickSorter();
 	
 	/*
 	 * 	This method adds an array of contracts in repository. 
@@ -48,6 +53,11 @@ public class ContractsRepositoriy {
 
 	}
 	
+	/*
+	 * 	This method creates a clone of an array of contracts this repository. 
+	 * This method copy and adds ever element of an array of contracts in new an array 
+	 * and returns this new array.
+	 */
 	public Contract[] getCloneContractsArray()
 	{
 		Contract[] cloneContracts = new Contract[number];
@@ -137,11 +147,21 @@ public class ContractsRepositoriy {
 		}
 	}
 	
-	private void sort(Comparator<Contract> comparator)
+	/*
+	 * 	This method sorts the array elements of this repository 
+	 * by the passed comparator.
+	 */
+	public void sort(Comparator<Contract> comparator)
 	{
 		sorter.sort(contracts, comparator);
 	}
 	
+	/*
+	 * 	This method search the array elements of this repository that 
+	 * satisfy the conditions of the passed predicate and returns the object
+	 * of this class that includes these elements.
+	 * 
+	 */
 	public ContractsRepositoriy search(Predicate<Contract> predicate)
 	{
 		int indexElements = 0;

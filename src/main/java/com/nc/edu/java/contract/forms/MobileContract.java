@@ -22,19 +22,19 @@ public class MobileContract extends Contract{
 	//This field is traffic of Internet
 	double gb;
 	
-	public int getMinutes() {
+	public Integer getMinutes() {
 		return minutes;
 	}
 	public void setMinutes(int minutes) {
 		this.minutes = minutes;
 	}
-	public int getSms() {
+	public Integer getSms() {
 		return sms;
 	}
 	public void setSms(int sms) {
 		this.sms = sms;
 	}
-	public double getGb() {
+	public Double getGb() {
 		return gb;
 	}
 	public void setGb(double gb) {

@@ -29,7 +29,7 @@ public abstract class Contract {
     //This field is contract owner
 	Person client;
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	public void setId(int id) {

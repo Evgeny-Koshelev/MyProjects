@@ -1,4 +1,4 @@
-package com.nc.edu.contract.perositoriy;
+package com.nc.edu.java.contract.repositoriy;
 
 import static org.junit.Assert.*;
 
