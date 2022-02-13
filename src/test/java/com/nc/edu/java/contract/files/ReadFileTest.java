@@ -10,9 +10,10 @@ import com.nc.edu.java.contract.forms.MobileContract;
 import com.nc.edu.java.contract.forms.Person;
 import com.nc.edu.java.contract.forms.TvContract;
 import com.nc.edu.java.contract.repositoriy.ContractsRepositoriy;
+import com.nc.edu.java.contract.validator.Validator;
 
 public class ReadFileTest {
-
+	
 	private Contract[] addContracts = new Contract [5];
 	ContractsRepositoriy contracts = new ContractsRepositoriy();
 
@@ -21,7 +22,8 @@ public class ReadFileTest {
 		fillListContracts();
 		String path = "src/test/resources/Contracts.csv";
 		ReadFile readFile = new ReadFile();
-		readFile.read(path, contracts);
+		Validator validator = new Validator();
+		readFile.read(path, contracts,validator);
 		for(int i =0;i<addContracts.length;i++)
 		{
 			for(int j = 0;j<addContracts[i].getAllFields().length;j++)

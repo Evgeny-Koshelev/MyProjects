@@ -46,7 +46,7 @@ public class QuickSorter implements ISorter {
 	 *  Then everything is repeated with subarrays.
 	 */
 	
-	 public Contract[] algorithmQuickSort(Contract[] contractsArray, int first, int last, Comparator<Contract> comparator)
+	 private Contract[] algorithmQuickSort(Contract[] contractsArray, int first, int last, Comparator<Contract> comparator)
      {
          if (first < last)
          {

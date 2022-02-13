@@ -10,20 +10,36 @@ import com.nc.edu.java.contract.forms.MobileContract;
 import com.nc.edu.java.contract.forms.Person;
 import com.nc.edu.java.contract.forms.TvContract;
 import com.nc.edu.java.contract.repositoriy.ContractsRepositoriy;
+import com.nc.edu.java.contract.validator.Validator;
 
+/*This class reads files different types and adds 
+ * from this files data about of contracts to repository.
+ * For correct reading of data from a file, 
+ * the strings in it must be separated by a ";" or "/".
+ * Each line in this file should have 10 strings 
+ * where the ninth string is the type of contract 
+ * and the tenth string is unique data for this type of contract.
+ */ 
 public class ReadFile {
-
-	public void read(String path, ContractsRepositoriy contracts)
+	
+	/* This method reads files and adds them to repository. 
+	 * This method takes a string containing the path to the file to be read and
+	 * repository to which you want to add contacts from the file.
+     * Method reads all lines from file, separating each line
+     * with a ";". or "/" for substrings, adds this string to array of strings, 
+     * checks contract by validator and then adds this an array to repository.
+	 */
+	public void read(String path, ContractsRepositoriy contracts, Validator validator)
 	{
 		BufferedReader reader = null;
 		String line = "";
 		
 		try {
 			reader = new BufferedReader(new FileReader(path));
-			
+		
 			while((line = reader.readLine()) != null)
 			{
-				String [] row = line.split(";|\\/" );
+				String [] row = line.split(";|\\," );
 				int personId = 0;
 				try {
 					personId =Integer.valueOf(row[0]);
@@ -66,7 +82,20 @@ public class ReadFile {
 					contract[0] = new TvContract(id,row[5],row[6],row[7],person,row[9]);
 					
 				}
-				contracts.addContract(contract);
+				
+				Object [] validCheck = validator.checkForValid(contract[0]);
+					
+				if(validCheck[0].equals("Ok"))
+				{
+					contracts.addContract(contract);
+				}
+			
+				else
+				{
+					break;
+
+				}
+
 			}
 		}
 		catch(Exception e) {

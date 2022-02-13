@@ -16,7 +16,7 @@ import java.util.function.Predicate;
  * This class contains fields such as number and contracts*/
 
 public class ContractsRepositoriy {
-	
+
     //This field is number of contracts in our repository
 	private int number = 0;
 	
