@@ -2,6 +2,9 @@ package com.nc.edu.java.contract.files;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Test;
 
 import com.nc.edu.java.contract.forms.Contract;
@@ -10,6 +13,9 @@ import com.nc.edu.java.contract.forms.MobileContract;
 import com.nc.edu.java.contract.forms.Person;
 import com.nc.edu.java.contract.forms.TvContract;
 import com.nc.edu.java.contract.repositoriy.ContractsRepositoriy;
+import com.nc.edu.java.contract.validator.CheckAge;
+import com.nc.edu.java.contract.validator.CheckDate;
+import com.nc.edu.java.contract.validator.CheckPassport;
 import com.nc.edu.java.contract.validator.Validator;
 
 public class ReadFileTest {
@@ -20,10 +26,10 @@ public class ReadFileTest {
 	@Test
 	public void testRead() {
 		fillListContracts();
+		List <Validator> validators = Arrays.asList(new CheckDate(), new CheckAge(), new CheckPassport());
 		String path = "src/test/resources/Contracts.csv";
 		ReadFile readFile = new ReadFile();
-		Validator validator = new Validator();
-		readFile.read(path, contracts,validator);
+		readFile.read(path, contracts,validators);
 		for(int i =0;i<addContracts.length;i++)
 		{
 			for(int j = 0;j<addContracts[i].getAllFields().length;j++)

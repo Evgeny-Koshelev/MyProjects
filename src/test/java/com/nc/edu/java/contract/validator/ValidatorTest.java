@@ -2,162 +2,79 @@ package com.nc.edu.java.contract.validator;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Test;
 
-import com.nc.edu.java.contract.files.ReadFile;
-import com.nc.edu.java.contract.repositoriy.ContractsRepositoriy;
+import com.nc.edu.java.contract.forms.Contract;
+import com.nc.edu.java.contract.forms.InternetContract;
+import com.nc.edu.java.contract.forms.MobileContract;
+import com.nc.edu.java.contract.forms.Person;
+import com.nc.edu.java.contract.forms.TvContract;
+
 
 public class ValidatorTest {
 	
-	ContractsRepositoriy contracts = new ContractsRepositoriy();
+	Boolean [] checkValidator = new Boolean[11];
+	Contract [] resultValidator = new Contract[11];
 
 	@Test
 	public void testCheckForValidErrorDateFormat() {
-		String path = "src/test/resources/ContractsValidDateErrorFormat.csv";
-		Validator validator = new Validator();
-		ReadFile readFile = new ReadFile();
-		readFile.read(path, contracts, validator);
-		Object [] checkValidator = new Object[3];
-		Object [] resaultValidator = new Object[3];
-		checkValidator[0] = "Error in contract ¹6512";
-		checkValidator[1] = "Wrong date format. Exaple:dd.MM.yyyy ";
-		checkValidator[2] = "Check field dateInput or field dateOut";
-		resaultValidator = validator.getClone();
-		for(int i =0;i<3;i++)
+		fillListsForCheck();
+		List <Validator> validators = Arrays.asList(new CheckDate(), new CheckAge(), new CheckPassport());
+		
+		for(int i = 0;i<resultValidator.length;i++)
 		{
-			assertEquals(resaultValidator[i],checkValidator[i]);
+			Contract contract = resultValidator[i];
+			boolean status = validators.stream().map(v->v.checkForValid(contract)).
+					anyMatch(ob->((ValidationResult) ob).getResultCheck().equals("Error") ||
+							((ValidationResult) ob).getResultCheck().equals("Red risk"));
+			assertEquals(status,checkValidator[i]);
 		}
-	}
-	
-	@Test
-	public void testCheckForValidDateOk() {
-		String path = "src/test/resources/ContractsValidDateOk.csv";
-		Validator validator = new Validator();
-		ReadFile readFile = new ReadFile();
-		readFile.read(path, contracts, validator);
-		Object [] checkValidator = new Object[3];
-		Object [] resaultValidator = new Object[3];
-		checkValidator[0] = "Ok";
-		checkValidator[1] = "";
-		checkValidator[2] = "";
-		resaultValidator = validator.getClone();
-		for(int i =0;i<3;i++)
-		{
-			assertEquals(resaultValidator[i],checkValidator[i]);
-		}
-	}
-	
-	@Test
-	public void testCheckForValidDateErrorDate() {
-		String path = "src/test/resources/ContractsValidDateError.csv";
-		Validator validator = new Validator();
-		ReadFile readFile = new ReadFile();
-		readFile.read(path, contracts, validator);
-		Object [] checkValidator = new Object[3];
-		Object [] resaultValidator = new Object[3];
-		checkValidator[0] = "Error in contract ¹7031";
-		checkValidator[1] = "The end date of the contract cannot be earlier "
-    			+ "than the start date of the contract";
-		checkValidator[2] = "Check field  dateInput or field dateOut";
-		resaultValidator = validator.getClone();
-		for(int i =0;i<3;i++)
-		{
-			assertEquals(resaultValidator[i],checkValidator[i]);
-		}
-	}
-	
-	@Test
-	public void testCheckForValidAgePersonOk() {
-		String path = "src/test/resources/ContractsValidAgePersonOk.csv";
-		Validator validator = new Validator();
-		ReadFile readFile = new ReadFile();
-		readFile.read(path, contracts, validator);
-		Object [] checkValidator = new Object[3];
-		Object [] resaultValidator = new Object[3];
-		checkValidator[0] = "Ok";
-		checkValidator[1] = "";
-		checkValidator[2] = "";
-		resaultValidator = validator.getClone();
-		for(int i =0;i<3;i++)
-		{
-			assertEquals(resaultValidator[i],checkValidator[i]);
-		}
-	}
-	
-	@Test
-	public void testCheckForValidAgePersonError() {
-		String path = "src/test/resources/ContractsValidAgePersonError.csv";
-		Validator validator = new Validator();
-		ReadFile readFile = new ReadFile();
-		readFile.read(path, contracts, validator);
-		Object [] checkValidator = new Object[3];
-		Object [] resaultValidator = new Object[3];
-		checkValidator[0] = "Error in contract ¹6512";
-		checkValidator[1] = "Invalid customer age. Age of person should be more then 13 years"
-    			+ "and less then 130 years";
-		checkValidator[2] = "Check date Birthday";
-		resaultValidator = validator.getClone();
-		for(int i =0;i<3;i++)
-		{
-			assertEquals(resaultValidator[i],checkValidator[i]);
-		}
-	}
-	
-	@Test
-	public void testCheckForValidPassportPersonOk() {
-		String path = "src/test/resources/ContractsValidPassportPersonOk.csv";
-		Validator validator = new Validator();
-		ReadFile readFile = new ReadFile();
-		readFile.read(path, contracts, validator);
-		Object [] checkValidator = new Object[3];
-		Object [] resaultValidator = new Object[3];
-		checkValidator[0] = "Ok";
-		checkValidator[1] = "";
-		checkValidator[2] = "";
-		resaultValidator = validator.getClone();
-		for(int i =0;i<3;i++)
-		{
-			assertEquals(resaultValidator[i],checkValidator[i]);
-		}
-	}
-	
-	@Test
-	public void testCheckForValidPassportPersonErrorLength() {
-		String path = "src/test/resources/ContractsValidPassportPersonErrorLength.csv";
-		Validator validator = new Validator();
-		ReadFile readFile = new ReadFile();
-		readFile.read(path, contracts, validator);
-		Object [] checkValidator = new Object[3];
-		Object [] resaultValidator = new Object[3];
-		checkValidator[0] = "Error in contract ¹7031";
-		checkValidator[1] = "Invalid customer passport data. Passport must have "
-    			+ "10 characters, 4 digits - series and 6 digits - number";
-		checkValidator[2] = "Check passport data";
-		resaultValidator = validator.getClone();
-		for(int i =0;i<3;i++)
-		{
-			assertEquals(resaultValidator[i],checkValidator[i]);
-		}
-	}
-	
-	
-	@Test
-	public void testCheckForValidPassportPersonErrorSymbols() {
-		String path = "src/test/resources/ContractsValidPassportPersonErrorSymbols.csv";
-		Validator validator = new Validator();
-		ReadFile readFile = new ReadFile();
-		readFile.read(path, contracts, validator);
-		Object [] checkValidator = new Object[3];
-		Object [] resaultValidator = new Object[3];
-		checkValidator[0] = "Error in contract ¹7031";
-		checkValidator[1] = "Passport must include only numbers";
-		checkValidator[2] = "Check passport data";
-		resaultValidator = validator.getClone();
-		for(int i =0;i<3;i++)
-		{
-			assertEquals(resaultValidator[i],checkValidator[i]);
-		}
-	}
+			
+			
 
+	}
+	private void fillListsForCheck() {
+		Person alex = new Person(1, "Alex","27.11.1980", "Man", "4212777888");
+		Person olga = new Person(2, "Olga","17.08.1995","Woman","4212388932");
+		Person anton = new Person(3, "Anton","27.11.1880","Man","42127718835");
+		Person anna = new Person(4, "Anna","12.07.1999","Woman","4213385532");
+		Person danil = new Person(5, "Danil","27.11.1970","Man","4212123888");
+		Person oleg = new Person(6, "Oleg","17.08.1993","Man","4212");
+		Person valentina = new Person(7, "Valentina","17.08.1965","Woman","42AB3889cd");
 
+		
+		checkValidator [0] = false;
+		checkValidator [1] = false;
+		checkValidator [2] = false;
+		checkValidator [3] = false;
+		checkValidator [4] = false;
+		checkValidator [5] = true;
+		checkValidator [6] = true;
+		checkValidator [7] = true;
+		checkValidator [8] = true;
+		checkValidator [9] = true;
+		checkValidator [10] = true;
+				
+		
+		resultValidator [0] = new InternetContract(1, "01.02.2020", "01.03.2020", "6512", alex, 100); 
+		resultValidator [1] = new MobileContract(2, "01.02.2020", "01.03.2020", "6513", alex, 300, 300, 10.00); 
+		resultValidator [2] = new TvContract(3, "01.02.2020","01.03.2020", "6514", alex, "TvMin"); 
+		resultValidator [3] = new InternetContract(4, "01.05.2020", "01.05.2021", "7030", olga, 500); 
+		resultValidator [4] = new TvContract(5, "01.05.2020", "01.05.2021", "7031", olga, "TvMin"); 
+		resultValidator [5] = new InternetContract(6, "01.02.2020", "01.03.2020", "6700", anton, 100); 
+		resultValidator [6] = new TvContract(7, "01.05.2021", "01.05.2020", "7000", anna, "TvMin"); 
+		resultValidator [7] = new InternetContract(8, "01-02-2020", "01-03-2020", "6812", danil, 100); 
+		resultValidator [8] = new TvContract(9, "01/05/2020", "01/05/2021", "6931", danil, "TvMin"); 
+		resultValidator [9] = new TvContract(10, "01.05.2020", "01.05.2021", "7031", oleg, "TvMin"); 
+		resultValidator [10] = new TvContract(11, "01.05.2020", "01.05.2021", "7531", valentina, "TvMin"); 
+
+	}
+	
+	
+	
+
+	
 }
