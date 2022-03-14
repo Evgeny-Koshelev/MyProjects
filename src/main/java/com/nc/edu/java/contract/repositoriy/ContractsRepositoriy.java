@@ -1,6 +1,7 @@
 
 package com.nc.edu.java.contract.repositoriy;
 
+import com.nc.edu.java.contract.DI.AutoInjectable;
 import com.nc.edu.java.contract.forms.Contract;
 import com.nc.edu.java.contract.sorts.ISorter;
 import com.nc.edu.java.contract.sorts.MergeSorter;
@@ -24,7 +25,8 @@ public class ContractsRepositoriy {
 	private Contract[] contracts = new Contract[number];
 	
 //	private ISorter sorter = new MergeSorter();
-	private ISorter sorter = new QuickSorter();
+	@AutoInjectable
+	private ISorter sorter;
 	
 	/*
 	 * 	This method adds an array of contracts in repository. 

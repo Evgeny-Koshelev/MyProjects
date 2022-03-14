@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
+import com.nc.edu.java.contract.DI.AutoInjectable;
 import com.nc.edu.java.contract.forms.Contract;
 import com.nc.edu.java.contract.forms.InternetContract;
 import com.nc.edu.java.contract.forms.MobileContract;
@@ -27,6 +28,7 @@ import com.nc.edu.java.contract.validator.ValidationResult;
  */ 
 public class ReadFile {
 	
+	@AutoInjectable
 	List<Validator> validators;
 	
 	/* This method reads files and adds them to repository. 
