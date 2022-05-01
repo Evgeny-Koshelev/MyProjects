@@ -3,12 +3,19 @@ package com.nc.edu.java.contract.repositoriy;
 
 import com.nc.edu.java.contract.DI.AutoInjectable;
 import com.nc.edu.java.contract.forms.Contract;
+import com.nc.edu.java.contract.forms.InternetContract;
+import com.nc.edu.java.contract.forms.MobileContract;
+import com.nc.edu.java.contract.forms.Person;
+import com.nc.edu.java.contract.forms.TvContract;
 import com.nc.edu.java.contract.sorts.ISorter;
 import com.nc.edu.java.contract.sorts.MergeSorter;
 import com.nc.edu.java.contract.sorts.QuickSorter;
 
 import java.lang.RuntimeException;
+import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -182,5 +189,119 @@ public class ContractsRepositoriy {
 
 		return contractsSearch;
 	}
+	
+	public void saveToDB(Connection cn) throws SQLException {
+        PreparedStatement preparedStatement;
+        for (int i = 0; i < contracts.length; i++) {
+            if(contracts[i].getClass() == TvContract.class){
+                TvContract tvContract = (TvContract) contracts[i];
+                preparedStatement = cn.prepareStatement("insert into tv_contracts "
+                		+ "(id, date_input, date_out, number_contract, client_id, pakege_of_canals) "
+                		+ "values (?, ?, ?, ?, ?, ?)");
+                preparedStatement.setInt(1, tvContract.getId());
+                try {
+                	//SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+                	java.sql.Date dateOfIn = java.sql.Date.valueOf(tvContract.getDateInput());
+                	java.sql.Date dateOfOut = java.sql.Date.valueOf(tvContract.getDateOut());
+                	preparedStatement.setDate(2, dateOfIn);
+                    preparedStatement.setDate(3, dateOfOut);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                preparedStatement.setString(4, tvContract.getNumberContract());
+                preparedStatement.setInt(5, tvContract.getClient().getId());
+                preparedStatement.setString(6, tvContract.getPakegeofcanals());
+                preparedStatement.executeUpdate();
+            }
+            else if(contracts[i].getClass() == MobileContract.class){
+                MobileContract mobileContract = (MobileContract) contracts[i];
+                preparedStatement = cn.prepareStatement("insert into mobile_contracts "
+                		+ "(id, date_input, date_out, number_contract, client_id, number_of_minutes, number_of_sms, gbs) "
+                		+ "values (?, ?, ?, ?, ?, ?, ?, ?)");
+                preparedStatement.setInt(1, mobileContract.getId());
+                try {
+                	java.sql.Date dateOfIn = java.sql.Date.valueOf(mobileContract.getDateInput());
+                	java.sql.Date dateOfOut = java.sql.Date.valueOf(mobileContract.getDateOut());
+                	preparedStatement.setDate(2, dateOfIn);
+                    preparedStatement.setDate(3, dateOfOut);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                preparedStatement.setString(4, mobileContract.getNumberContract());
+                preparedStatement.setInt(5, mobileContract.getClient().getId());
+                preparedStatement.setInt(6, mobileContract.getMinutes());
+                preparedStatement.setInt(7, mobileContract.getSms());
+                preparedStatement.setFloat(8,mobileContract.getGb().floatValue());
+                preparedStatement.executeUpdate();
+            }
+            else if (contracts[i].getClass() == InternetContract.class){
+                InternetContract internetContract = (InternetContract) contracts[i];
+                preparedStatement = cn.prepareStatement("insert into internet_contracts "
+                		+ "(id, date_input, date_out, number_contract, client_id, speed) "
+                		+ "values (?, ?, ?, ?, ?, ?)");
+                preparedStatement.setInt(1, internetContract.getId());
+                try {
+                	java.sql.Date dateOfIn = java.sql.Date.valueOf(internetContract.getDateInput());
+                	java.sql.Date dateOfOut = java.sql.Date.valueOf(internetContract.getDateOut());
+                	preparedStatement.setDate(2, dateOfIn);
+                    preparedStatement.setDate(3, dateOfOut);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                preparedStatement.setString(4, internetContract.getNumberContract());
+                preparedStatement.setInt(5, internetContract.getClient().getId());
+                preparedStatement.setInt(6, internetContract.getSpeed());
+                preparedStatement.executeUpdate();
+            }
+        }
+    }
+
+    public void getFromDB(Connection cn) throws SQLException { 	
+        PreparedStatement preparedStatementTvContract = cn.prepareStatement("select * from tv_contracts");
+        ResultSet resultSet = preparedStatementTvContract.executeQuery();
+        while (resultSet.next()){
+        	Contract[] getContracts = new Contract[1];
+            Person person = Person.getFromDBById(cn, resultSet.getInt("client_id"));
+            TvContract tvContract = new TvContract(resultSet.getInt("id"), 
+            		new SimpleDateFormat("yyyy-MM-dd").format(resultSet.getDate("date_input")), 
+            		new SimpleDateFormat("yyyy-MM-dd").format(resultSet.getDate("date_out")), 
+            		resultSet.getString("number_contract"), person, resultSet.getString("pakege_of_canals"));
+            getContracts[0] = tvContract;
+            addContract(getContracts);
+        }
+
+        PreparedStatement preparedStatementMobileContract = cn.prepareStatement("select * from mobile_contracts");
+        resultSet = preparedStatementMobileContract.executeQuery();
+        while (resultSet.next()){
+        	Contract[] getContracts = new Contract[1];
+            Person person = Person.getFromDBById(cn, resultSet.getInt("client_id"));
+            MobileContract mobileContract = new MobileContract(resultSet.getInt("id"), 
+            		new SimpleDateFormat("yyyy-MM-dd").format(resultSet.getDate("date_input")), 
+            		new SimpleDateFormat("yyyy-MM-dd").format(resultSet.getDate("date_out")), 
+            		resultSet.getString("number_contract"), 
+            		person,
+            		resultSet.getInt("number_of_minutes"), 
+            		resultSet.getInt("number_of_sms"), 
+            		resultSet.getFloat("gbs"));
+            getContracts[0] = mobileContract;
+            addContract(getContracts);
+        }
+
+        PreparedStatement preparedStatementInternetContract = cn.prepareStatement("select * from internet_contracts");
+        resultSet = preparedStatementInternetContract.executeQuery();
+        while (resultSet.next()){
+        	Contract[] getContracts = new Contract[1];
+            Person person = Person.getFromDBById(cn, resultSet.getInt("client_id"));
+            InternetContract internetContract = new InternetContract(resultSet.getInt("id"), 
+            		new SimpleDateFormat("yyyy-MM-dd").format(resultSet.getDate("date_input")), 
+            		new SimpleDateFormat("yyyy-MM-dd").format(resultSet.getDate("date_out")), 
+            		resultSet.getString("number_contract"),  
+            		person, 
+            		resultSet.getInt("speed"));
+            getContracts[0] = internetContract;
+            addContract(getContracts);
+
+        }
+    }
 
 }

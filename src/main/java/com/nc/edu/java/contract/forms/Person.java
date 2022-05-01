@@ -1,7 +1,9 @@
 package com.nc.edu.java.contract.forms;
 
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 
 /*
  * This class is an entity for owner contract.
@@ -102,10 +104,10 @@ public class Person {
 	private int ageOfPerson()
 	{
 		int date = 0;
-		String dateNow = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
+		String dateNow = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 		 try {
 
-	            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+	            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	            Date dateOfBirth = dateFormat.parse(dateBirth);
 	            Date dateOfNow = dateFormat.parse(dateNow);	 
 	            long milliseconds = (dateOfNow.getTime() - dateOfBirth.getTime())/(1000*60*60*24);
@@ -117,6 +119,33 @@ public class Person {
 		 return date;
 
 	}
+	
+	public void saveToDB(Connection cn) throws SQLException {
+        PreparedStatement preparedStatement = cn.prepareStatement("insert into persons (id, full_name, birth_date, gender, passport) values (?, ?, ?, ?, ?)");
+        preparedStatement.setInt(1, this.getId());
+        preparedStatement.setString(2, this.getFullName());
+        try {
+        	//SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        	java.sql.Date dateOfBirth = java.sql.Date.valueOf(dateBirth);
+        	preparedStatement.setDate(3, dateOfBirth);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        preparedStatement.setString(4, this.getGender());
+        preparedStatement.setString(5, this.getPassport());
+        preparedStatement.executeUpdate();
+    }
+
+    public static Person getFromDBById(Connection cn, int personId) throws SQLException {
+        PreparedStatement preparedStatement = cn.prepareStatement("select * from persons where id = ?");
+        preparedStatement.setInt(1, personId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        Person person = null;
+        while (resultSet.next()){
+            person = new Person(resultSet.getInt("id"), resultSet.getString("full_name"), new SimpleDateFormat("yyyy-MM-dd").format(resultSet.getDate("birth_date")), resultSet.getString("gender"), resultSet.getString("passport"));
+        }
+        return person;
+    }
 
 }
 
