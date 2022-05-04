@@ -1,10 +1,14 @@
 package com.nc.edu.java.contract.forms;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import com.nc.edu.java.contract.JAXB.ConvectorXML;
+
 /*
  * It is abstract class is base class for all contract types.
  * This class contains fields common to all types of contracts
  * such as id, dateInput, dateOut, numberContract, client*/
-
+@XmlJavaTypeAdapter(ConvectorXML.class)
 public abstract class Contract {
 	public Contract(int id, String dateInput, String dateOut, String numberContract, Person client) {
 		super();
@@ -14,6 +18,7 @@ public abstract class Contract {
 		this.numberContract = numberContract;
 		this.client = client;
 	}
+	
     //This field is id of contact
 	int id;
 	

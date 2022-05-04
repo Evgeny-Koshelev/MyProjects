@@ -4,11 +4,15 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.xml.bind.annotation.*;
+
 
 /*
  * This class is an entity for owner contract.
  * This class contains same field such as id, fullName, dateBirth gender, passport and age*/
 
+@XmlRootElement(name = "person")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Person {
 	public Person(int id, String fullName, String dateBirth, String gender, String passport) {
 		super();
@@ -20,19 +24,27 @@ public class Person {
 		this.age = ageOfPerson();
 	}
 	
+	 public Person() {
+	    }
+	
     //This field is id of client
+	@XmlAttribute(name = "personId")
 	int id;
 	
     //This field is full name of client
+	@XmlAttribute(name = "fullNameClient")
 	String fullName;
 	
     //This field is the client's date of birth.
+	@XmlAttribute(name = "dateBirthClient")
 	String dateBirth;
 	
 	//This field is the client's gender.
+	@XmlAttribute(name = "genderClient")
 	String gender;
 	
 	//This field is the client's passport data.
+	@XmlAttribute(name = "passportClient")
 	String passport;
 	
 	//This field is the client's age in years.

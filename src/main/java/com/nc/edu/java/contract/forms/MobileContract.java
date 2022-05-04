@@ -4,6 +4,8 @@ package com.nc.edu.java.contract.forms;
  * This class is an extends of the Contract class.
  * This class contains new fields such as minutes, sms, gb*/
 
+import javax.xml.bind.annotation.XmlAttribute;
+
 public class MobileContract extends Contract{
 	public MobileContract(int id, String dateInput, String dateOut, String numberContract, Person client, int minutes, int sms,
 			double gb) {
@@ -13,7 +15,7 @@ public class MobileContract extends Contract{
 		this.gb = gb;
 	}
 	
-    //This field is count of minutes for a telephone conversation
+    //This field is count of minutes for a telephone conversation)
 	int minutes;
 	
 	//This field is number of sms to send messages

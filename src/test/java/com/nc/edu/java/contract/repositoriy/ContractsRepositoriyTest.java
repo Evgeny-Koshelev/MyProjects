@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 
 import org.junit.Test;
 
+import com.nc.edu.java.contract.JAXB.JAXBWorker;
 import com.nc.edu.java.contract.forms.Contract;
 import com.nc.edu.java.contract.forms.InternetContract;
 import com.nc.edu.java.contract.forms.MobileContract;
@@ -136,6 +137,7 @@ public class ContractsRepositoriyTest {
 		 cn.close();
 	}
 	
+		
 	private void fillListContracts() {
 		
 	

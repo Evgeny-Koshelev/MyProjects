@@ -19,20 +19,27 @@ import java.util.Date;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import javax.xml.bind.annotation.*;
+
 /*
  * This class is repository for keep contracts.
  * This class contains fields such as number and contracts*/
-
+@XmlRootElement(name = "repository")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ContractsRepositoriy {
 
     //This field is number of contracts in our repository
+	@XmlAttribute
 	private int number = 0;
 	
 	//This field is array of contracts of different types
+	@XmlElement(name = "contract")
+	@XmlElementWrapper
 	private Contract[] contracts = new Contract[number];
 	
 //	private ISorter sorter = new MergeSorter();
 	@AutoInjectable
+	@XmlTransient
 	private ISorter sorter;
 	
 	/*

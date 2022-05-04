@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<repository number="5">
+    <contracts>
+        <contract idContact="3" dateInputContact="2020-02-01" dateOutContact="2020-03-01" number="6514" speedInternet="0" minutesCall="0" smsNumber="0" gbAmount="0.0" pakegeCanals="TvMin">
+            <clientContact personId="1" fullNameClient="Alex" dateBirthClient="1980-11-27" genderClient="Man" passportClient="4212777888">
+                <age>41</age>
+            </clientContact>
+        </contract>
+        <contract idContact="6" dateInputContact="2020-05-01" dateOutContact="2021-05-01" number="7031" speedInternet="0" minutesCall="0" smsNumber="0" gbAmount="0.0" pakegeCanals="TvMin">
+            <clientContact personId="2" fullNameClient="Olga" dateBirthClient="1995-08-17" genderClient="Woman" passportClient="4212388932">
+                <age>26</age>
+            </clientContact>
+        </contract>
+        <contract idContact="2" dateInputContact="2020-02-01" dateOutContact="2020-03-01" number="6513" speedInternet="0" minutesCall="300" smsNumber="300" gbAmount="10.0">
+            <clientContact personId="1" fullNameClient="Alex" dateBirthClient="1980-11-27" genderClient="Man" passportClient="4212777888">
+                <age>41</age>
+            </clientContact>
+        </contract>
+        <contract idContact="1" dateInputContact="2020-02-01" dateOutContact="2020-03-01" number="6512" speedInternet="100" minutesCall="0" smsNumber="0" gbAmount="0.0">
+            <clientContact personId="1" fullNameClient="Alex" dateBirthClient="1980-11-27" genderClient="Man" passportClient="4212777888">
+                <age>41</age>
+            </clientContact>
+        </contract>
+        <contract idContact="4" dateInputContact="2020-05-01" dateOutContact="2021-05-01" number="7030" speedInternet="500" minutesCall="0" smsNumber="0" gbAmount="0.0">
+            <clientContact personId="2" fullNameClient="Olga" dateBirthClient="1995-08-17" genderClient="Woman" passportClient="4212388932">
+                <age>26</age>
+            </clientContact>
+        </contract>
+    </contracts>
+</repository>

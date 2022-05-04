@@ -1,5 +1,7 @@
 package com.nc.edu.java.contract.forms;
 
+import javax.xml.bind.annotation.XmlAttribute;
+
 /*
  * This class is an extends of the Contract class.
  * This class contains new field such as speed*/

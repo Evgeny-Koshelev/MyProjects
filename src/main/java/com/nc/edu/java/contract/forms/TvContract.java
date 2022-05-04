@@ -3,13 +3,15 @@ package com.nc.edu.java.contract.forms;
  * This class is an extends of the Contract class.
  * This class contains new field such as pakgeOfCanals*/
 
+import javax.xml.bind.annotation.XmlAttribute;
+
 public class TvContract extends Contract {
 	public TvContract(int id, String dateInput, String dateOut, String numberContract, Person client, String pakegeOfCanals) {
 		super(id, dateInput, dateOut, numberContract, client);
 		this.pakegeOfCanals = pakegeOfCanals;
 	}
 
-    //This field is name of the canals package for digital TV
+    //This field is name of the canals package for digital TV)
 	String pakegeOfCanals;
 
 	public String getPakegeofcanals() {
